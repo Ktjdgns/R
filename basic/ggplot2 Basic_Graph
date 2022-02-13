@@ -1,0 +1,44 @@
+# 산점도 (연속된 값으로 된 두 변수의 관계를 표현할 때 사용)
+library(ggplot2)
+
+ggplot(data = midwest, aes(x = poptotal, y = popasian)) + 
+  geom_point() +
+  xlim(0,500000) +
+  ylim(0,10000)
+
+# 막대그래프
+
+# 1. 집단별 평균 그래프 (집단 간 차이를 표현하는 그래프(집단별 평균표가 필요함))
+library(dplyr)
+library(ggplot2)
+mpg <- as.data.frame(ggplot2::mpg)
+
+df <- mpg %>% 
+  filter(class == "suv") %>% 
+  group_by(manufacturer) %>% 
+  summarise(mean_cty = mean(cty)) %>% 
+  arrange(desc(mean_cty)) %>% 
+  head(5)
+  
+ggplot(data = df, aes(x = reorder(manufacturer, -mean_cty), y = mean_cty)) + geom_col()
+
+# 2. 빈도 막대 그래프 (값의 개수(빈도)로 막대의 길이를 표현한 그래프)
+library(dplyr)
+library(ggplot2)
+mpg <- as.data.frame(ggplot2::mpg)
+
+ggplot(data = mpg, aes(x = class)) + geom_bar()
+
+# 시계열 그래프 (시간에 따라 어떻게 변하는지 보여주는 그래프)
+library(ggplot2)
+
+ggplot(data = economics, aes(x = date, y = psavert)) + geom_line()
+
+# 상자 그림 (집단 간 데이터의 분포를 파악 시 사용하는 그래프)
+library(ggplot2)
+library(dplyr)
+mpg <- as.data.frame(ggplot2::mpg)
+n_mpg <- mpg %>% 
+  filter(class == c("compact","suv","subcompact"))
+
+ggplot(data = n_mpg, aes(x = class, y = cty)) + geom_boxplot()
